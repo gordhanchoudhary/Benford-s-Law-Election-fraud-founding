@@ -1,14 +1,14 @@
-"""Check conformance of numerical data to Benford's Law."""
+
 import sys
 import math
 from collections import defaultdict
 import matplotlib.pyplot as plt
 
-# Benford's Law percentages for leading digits 1-9
+#percentages for every digits 1-9 of  Benford's Law 
 BENFORD = [30.1, 17.6, 12.5, 9.7, 7.9, 6.7, 5.8, 5.1, 4.6]
 
 def load_data(filename):
-    """Open a text file & return a list of strings."""
+    #Open a text file which contains votes of every president & return a list of strings.
     with open(filename) as f:
         return f.read().strip().split('\n')
     
@@ -26,7 +26,7 @@ def count_first_digits(data_list):
             sys.exit(1)
         first_digits[sample[0]] += 1  
         
-    # check for missing digits
+    # let's check for missing values 1-9
     keys = [str(digit) for digit in range(1, 10)]
     for key in keys:
         if key not in first_digits:
@@ -52,29 +52,29 @@ def chi_square_test(data_count, expected_counts):
     return chi_square_stat < 15.51
 
 def bar_chart(data_pct):
-    """Make bar chart of observed vs expected 1st digit frequency in percent."""
+    """Make bar chart """
     fig, ax = plt.subplots()
 
     index = [i + 1 for i in range(len(data_pct))]  # 1st digits for x-axis
 
-    # text for labels, title and ticks
+    # text for labels and title
     fig.canvas.set_window_title('Percentage First Digits')
     ax.set_title('Data vs. Benford Values', fontsize=15)
     ax.set_ylabel('Frequency (%)', fontsize=16)
     ax.set_xticks(index)
     ax.set_xticklabels(index, fontsize=14)
 
-    # build bars    
+    # let's draw bars  graph  
     rects = ax.bar(index, data_pct, width=0.95, color='black', label='Data')
 
-    # attach a text label above each bar displaying its height
+    # attach a text label 
     for rect in rects:
         height = rect.get_height()
         ax.text(rect.get_x() + rect.get_width()/2, height,
                 '{:0.1f}'.format(height), ha='center', va='bottom', 
                 fontsize=13)
 
-    # plot Benford values as red dots
+    # plot Benford values as red dots over plotted graph 
     ax.scatter(index, BENFORD, s=150, c='red', zorder=2, label='Benford')
 
     # Hide the right and top spines & add legend
@@ -85,7 +85,7 @@ def bar_chart(data_pct):
     plt.show()
 
 def main():
-    """Call functions and print stats."""
+    #Call functions and print stats.
     # load data
     while True:
         filename = input("\nName of file with COUNT data: ")
